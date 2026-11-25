@@ -1,0 +1,8 @@
+.env
+.env.*
+*.pem
+*.key
+id_rsa
+id_rsa.*
+*.credentials
+.DS_Store
