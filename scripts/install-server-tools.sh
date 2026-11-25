@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Install Composer, Node.js 26 LTS, and Docker on the dev server.
 # Choose all of them, or a list such as "1, 2".
 set -euo pipefail
