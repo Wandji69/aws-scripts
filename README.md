@@ -34,7 +34,7 @@ Open ports **80** and **443** in the instance security group before you expect a
 
 ### `install-lamp-php84.sh`
 
-- Ubuntu uses the `ppa:ondrej/php` archive. Debian uses [packages.sury.org](https://packages.sury.org/php/README.txt).
+- Ubuntu and Debian both use [packages.sury.org](https://packages.sury.org/php/README.txt). The `ppa:ondrej/php` archive is frozen, including on Ubuntu Resolute. If that PPA is already on the machine, the script removes it.
 - PHP modules include MySQL, bcmath, gmp, gd, imagick, curl, intl, mbstring, xml, zip, and opcache.
 - The phpMyAdmin package step is **interactive**. Choose `apache2` when it asks for the web server, and set the MySQL application password when prompted.
 - When it finishes it prints the instance IP, Apache, and `/phpmyadmin`.

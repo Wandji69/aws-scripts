@@ -8,19 +8,21 @@ if [[ ! -r /etc/os-release ]] || ! grep -Eqi 'ubuntu|debian' /etc/os-release; th
     exit 1
 fi
 
-echo "=== 1. Updating system & adding Ondrej PHP 8.4 repository ==="
+echo "=== 1. Updating system & adding Ondřej PHP 8.4 repository ==="
 sudo apt update
-sudo DEBIAN_FRONTEND=noninteractive apt install -y software-properties-common ca-certificates lsb-release apt-transport-https curl
+sudo DEBIAN_FRONTEND=noninteractive apt install -y ca-certificates lsb-release curl
 
-# Add Ondrej Surý's repository (supports both Ubuntu and Debian)
-if grep -qi "ubuntu" /etc/os-release; then
-    sudo add-apt-repository -y ppa:ondrej/php
-else
-    sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
-    sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
-    echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
-    sudo rm -f /tmp/debsuryorg-archive-keyring.deb
+# ppa:ondrej/php is frozen. Ubuntu and Debian now get PHP from packages.sury.org.
+# https://packages.sury.org/php/README.txt
+if compgen -G "/etc/apt/sources.list.d/*ondrej*php*" > /dev/null; then
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y software-properties-common
+    sudo add-apt-repository --remove -y ppa:ondrej/php
 fi
+
+sudo curl -fsSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
+sudo rm -f /tmp/debsuryorg-archive-keyring.deb
 sudo apt update
 
 echo "=== 2. Installing Apache & configuring firewall ==="
